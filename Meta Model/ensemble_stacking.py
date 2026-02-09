@@ -312,7 +312,7 @@ class StackingEnsemble:
     
     def __init__(
         self,
-        base_dir: str = "/home/SexyLadGD/Downloads/NLP backup",
+        base_dir: str = ".",
         confidence_threshold: float = 0.05
     ):
         """
@@ -554,9 +554,8 @@ class StackingEnsemble:
         self.meta_model = save_data['meta_model']
         self.meta_scaler = save_data['meta_scaler']
         self.confidence_threshold = save_data['confidence_threshold']
-        self.xgb_model.set_vectorizer(save_data['xgb_vectorizer'])
         self.is_meta_trained = True
-        (f"Meta-model loaded from {load_path}")
+        print(f"Meta-model loaded from {load_path}")
 
 
 # ==============================================================================

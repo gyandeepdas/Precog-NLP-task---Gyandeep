@@ -33,7 +33,7 @@ except:
 # Load DistilBERT model
 print("\nLoading DistilBERT model...")
 model = AutoModelForSequenceClassification.from_pretrained(
-    '/home/SexyLadGD/Downloads/NLP models/Distilbert model'
+    'Distilbert model'
 )
 tokenizer = AutoTokenizer.from_pretrained('distilbert-base-uncased')
 model.eval()

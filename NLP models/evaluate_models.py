@@ -18,7 +18,7 @@ print("="*80)
 
 # Load test data
 print("\n[1/6] Loading test dataset...")
-df = pd.read_csv('/home/SexyLadGD/Downloads/NLP models/final_dataset_gemma_complete.csv')
+df = pd.read_csv('test_set1.csv')
 test_texts = df['text'].tolist()
 test_labels = df['is_ai'].tolist()
 print(f"✓ Loaded {len(test_texts)} samples")
@@ -84,7 +84,7 @@ def print_performance_report(results):
 print("\n[2/6] Evaluating DistilBERT model...")
 try:
     distilbert_model = AutoModelForSequenceClassification.from_pretrained(
-        '/home/SexyLadGD/Downloads/NLP models/Distilbert model'
+        'Distilbert model'
     )
     tokenizer = AutoTokenizer.from_pretrained('distilbert-base-uncased')
     
@@ -122,13 +122,13 @@ except Exception as e:
 print("\n[3/6] Evaluating Semantic NN model...")
 try:
     semantic_model = tf.keras.models.load_model(
-        '/home/SexyLadGD/Downloads/NLP models/semantic_nnmodel',
+        'semantic_nnmodel',
         compile=False
     )
     
     # For semantic model, we need to prepare text embeddings
     # Using TF-IDF as a simple feature extractor (adjust based on your training)
-    with open('/home/SexyLadGD/Downloads/NLP models/semantic_nnmodel/metadata.json', 'r') as f:
+    with open('semantic_nnmodel/metadata.json', 'r') as f:
         metadata = json.load(f)
     
     # Create TF-IDF features (this is a simplification - adjust based on your actual preprocessing)
@@ -157,7 +157,7 @@ except Exception as e:
 print("\n[4/6] Evaluating XGBoost model...")
 try:
     xgb_model = xgb.Booster()
-    xgb_model.load_model('/home/SexyLadGD/Downloads/NLP models/Xgboost model/xgboost_ai_detector.json')
+    xgb_model.load_model('Xgboost model/xgboost_ai_detector.json')
     
     # Prepare features (using TF-IDF - adjust based on your training)
     vectorizer_xgb = TfidfVectorizer(max_features=5000)
@@ -230,7 +230,7 @@ if len(all_results) >= 2:
                    f'{height:.3f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
     
     plt.tight_layout()
-    plt.savefig('/home/SexyLadGD/Downloads/NLP models/model_comparison.png', dpi=300, bbox_inches='tight')
+    plt.savefig('model_comparison.png', dpi=300, bbox_inches='tight')
     print("✓ Saved: model_comparison.png")
     
     # Confusion matrices
@@ -250,7 +250,7 @@ if len(all_results) >= 2:
         ax.set_xlabel('Predicted Label')
     
     plt.tight_layout()
-    plt.savefig('/home/SexyLadGD/Downloads/NLP models/confusion_matrices.png', dpi=300, bbox_inches='tight')
+    plt.savefig('confusion_matrices.png', dpi=300, bbox_inches='tight')
     print("✓ Saved: confusion_matrices.png")
 
 print("\n" + "="*80)

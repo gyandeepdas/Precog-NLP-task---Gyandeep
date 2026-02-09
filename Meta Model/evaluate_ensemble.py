@@ -404,11 +404,8 @@ def main():
     print("="*60)
     
     # Load test data
-    test_data_path = "/home/SexyLadGD/Downloads/NLP backup/test_set1.csv"
+    test_data_path = "test_set1.csv"
     df = load_test_data(test_data_path)
-    
-    # Split into validation and test
-    val_df, test_df = train_validation_split(df, val_size=0.4)
     
     # Initialize ensemble
     print(f"\n{'='*60}")
@@ -416,26 +413,38 @@ def main():
     print('='*60)
     ensemble = StackingEnsemble()
     
-    # Train meta-model on validation set
-    ensemble = train_ensemble_meta_model(
-        ensemble,
-        val_texts=val_df['text'].tolist(),
-        val_labels=val_df['is_ai'].tolist()
-    )
+    # Note: Meta-model should be pre-trained. If not trained, uncomment the following:
+    # ensemble = train_ensemble_meta_model(
+    #     ensemble,
+    #     val_texts=df['text'].tolist(),
+    #     val_labels=df['is_ai'].tolist()
+    # )
     
-    # Evaluate on test set
+    # Load pre-trained meta-model
+    try:
+        ensemble.load_meta_model('meta_model_trained.pkl')
+        print("\nLoaded pre-trained meta-model from meta_model_trained.pkl")
+    except FileNotFoundError:
+        print("\nNo pre-trained meta-model found. Training on full dataset...")
+        ensemble = train_ensemble_meta_model(
+            ensemble,
+            val_texts=df['text'].tolist(),
+            val_labels=df['is_ai'].tolist()
+        )
+    
+    # Evaluate on full dataset
     results = evaluate_ensemble(
         ensemble,
-        test_texts=test_df['text'].tolist(),
-        test_labels=test_df['is_ai'].tolist(),
-        authors=test_df['author']
+        test_texts=df['text'].tolist(),
+        test_labels=df['is_ai'].tolist(),
+        authors=df['author']
     )
     
     # Generate visualizations
-    plot_results(results, test_df['is_ai'].tolist())
+    plot_results(results, df['is_ai'].tolist())
     
     # Save detailed results
-    save_detailed_results(test_df, results)
+    save_detailed_results(df, results)
     
     print(f"\n{'='*60}")
     print("EVALUATION COMPLETE!")

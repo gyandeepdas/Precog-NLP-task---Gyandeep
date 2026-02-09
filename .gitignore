@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Notebook artifacts
+.ipynb_checkpoints/
+
+# Local environments and large binaries
+NLP models/nlp_eval_env/
+
+# OS
+.DS_Store
